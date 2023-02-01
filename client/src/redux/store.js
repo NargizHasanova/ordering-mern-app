@@ -8,6 +8,8 @@ export const store = configureStore({
         hotels: hotelsReducer,
         rooms: roomsReducer,
         users: usersReducer
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
+    // non-serializable check olmasin deye
 })
 

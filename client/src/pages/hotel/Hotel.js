@@ -1,5 +1,4 @@
 import './hotel.scss'
-import Navbar from '../../components/navbar/Navbar'
 import Header from '../../components/header/Header'
 import MailList from '../../components/mailList/MailList'
 import Footer from '../../components/footer/Footer'
@@ -10,24 +9,24 @@ import {
   faCircleXmark,
   faLocationDot,
 } from '@fortawesome/free-solid-svg-icons'
-import { useState, useContext } from 'react'
-import useFetch from '../../hooks/useFetch'
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { SearchContext } from '../../context/SearchContext'
-import { AuthContext } from '../../context/AuthContext'
 import Reserve from '../../components/reserve/Reserve'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSingleHotel } from '../../redux/hotelsSlice'
 
 const Hotel = () => {
-  const { user } = useContext(AuthContext)
-  const { date, options } = useContext(SearchContext)
+  const dispatch = useDispatch()
+  const { date, options, hotel } = useSelector(state => state.hotels)
   const { id: hotelId } = useParams()
   const [slideNumber, setSlideNumber] = useState(0)
   const [open, setOpen] = useState(false)
   const [openModal, setOpenModal] = useState(false)
 
-  const { data, error, loading, refetch } = useFetch(
-    `/hotels/findById/${hotelId}`,
-  )
+
+  useEffect(() => {
+    dispatch(getSingleHotel(hotelId))
+  }, [])
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
   function dayDifference(date1, date2) {
@@ -44,18 +43,18 @@ const Hotel = () => {
 
   const handleMove = (direction) => {
     let newSlideNumber
-
     if (direction === 'l') {
-      newSlideNumber = slideNumber === 0 ? data.photos.length - 1 : slideNumber - 1
+      newSlideNumber = slideNumber === 0 ? hotel.photos.length - 1 : slideNumber - 1
     } else {
-      newSlideNumber = slideNumber === data.photos.length - 1 ? 0 : slideNumber + 1
+      newSlideNumber = slideNumber === hotel.photos.length - 1 ? 0 : slideNumber + 1
     }
+
     setSlideNumber(newSlideNumber)
   }
 
   function reserveTrip() {
     // if (user) {
-      setOpenModal(true)
+    setOpenModal(true)
     // } else {
     //   navigate('/login')
     // }
@@ -64,7 +63,7 @@ const Hotel = () => {
   return (
     <div>
       <Header type="list" />
-      {loading ? (
+      {!hotel ? (
         'loading please wait'
       ) : (
         <div className="hotelContainer">
@@ -82,7 +81,7 @@ const Hotel = () => {
               />
               <div className="sliderWrapper">
                 <img
-                  src={data.photos[slideNumber]}
+                  src={hotel.photos[slideNumber]}
                   alt=""
                   className="sliderImg"
                 />
@@ -98,20 +97,20 @@ const Hotel = () => {
             <button onClick={reserveTrip} className="bookNow">
               Reserve or Book Now!
             </button>
-            <h1 className="hotelTitle">{data.name}</h1>
+            <h1 className="hotelTitle">{hotel.name}</h1>
             <div className="hotelAddress">
               <FontAwesomeIcon icon={faLocationDot} />
-              <span>{data.address}</span>
+              <span>{hotel?.address}</span>
             </div>
             <span className="hotelDistance">
-              Excellent location – {data.distance}m from center
+              Excellent location – {hotel?.distance}m from center
             </span>
             <span className="hotelPriceHighlight">
-              Book a stay over ${data.cheapestPrice} at this property and get a
+              Book a stay over ${hotel?.pricePerNight} at this property and get a
               free airport taxi
             </span>
             <div className="hotelImages">
-              {data.photos?.map((photo, index) => (
+              {hotel?.photos?.map((photo, index) => (
                 <div className="hotelImgWrapper" key={index}>
                   <img
                     onClick={handleOpen}
@@ -125,11 +124,11 @@ const Hotel = () => {
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
                 <h1 className="hotelTitle">
-                  {data.title + " "}
+                  {hotel?.title + " "}
                   Stay in the heart of City
                 </h1>
                 <p className="hotelDesc">
-                  {data.desc + " "}
+                  {hotel?.desc + " "}
                   Located a 5-minute walk from St. Florian's Gate in Krakow,
                   Tower Street Apartments has accommodations with air
                   conditioning and free WiFi. The units come with hardwood
@@ -151,7 +150,7 @@ const Hotel = () => {
                   excellent location score of 9.8!
                 </span>
                 <h2>
-                  <b>${days * data.cheapestPrice * options.room}</b> (
+                  <b>${days * hotel?.pricePerNight * options.room}</b> (
                   {days === 1 ? days + ' night' : days + ' nights'})
                   {/* 2gun 200manat 2otaq */}
                 </h2>

@@ -4,7 +4,7 @@ import './featuredProperties.scss'
 
 const FeaturedProperties = () => {
   // const { data, error, loading } = useFetch('/hotels/?min=499&limit=4')
-  const { hotelsData, error, loading } = useSelector(state => state.hotels)
+  const { topHotelsData, error, loading } = useSelector(state => state.hotels)
   const images = [
     'https://cf.bstatic.com/xdata/images/hotel/square600/13125860.webp?k=e148feeb802ac3d28d1391dad9e4cf1e12d9231f897d0b53ca067bde8a9d3355&o=&s=1',
     'https://cf.bstatic.com/xdata/images/hotel/max1280x900/215955381.jpg?k=ff739d1d9e0c8e233f78ee3ced82743ef0355e925df8db7135d83b55a00ca07a&o=&hp=1',
@@ -13,7 +13,7 @@ const FeaturedProperties = () => {
   ]
   let ratingDesc = ''
 
-  hotelsData?.map(
+  topHotelsData?.map(
     (hotel, i) => {
       if (hotel.rating) {
         if (hotel.rating > 4) {
@@ -34,7 +34,7 @@ const FeaturedProperties = () => {
       {
         loading
           ? 'loading please wait'
-          : hotelsData?.map((hotel, i) => (
+          : topHotelsData?.map((hotel, i) => (
             <div className="fpItem" key={hotel._id}>
               <img src={images[i]} alt="" className="fpImg" />
               <span className="fpName">{hotel.name}</span>

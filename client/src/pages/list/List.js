@@ -1,31 +1,31 @@
 import './list.scss'
-import Navbar from '../../components/navbar/Navbar'
 import Header from '../../components/header/Header'
 import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { format, set } from 'date-fns'
+import { format } from 'date-fns'
 import { DateRange } from 'react-date-range'
 import SearchItem from '../../components/searchItem/SearchItem'
-import useFetch from '../../hooks/useFetch'
+import { useDispatch, useSelector } from 'react-redux'
+import { getHotelsList, setOrderInfo } from '../../redux/hotelsSlice'
 
 const List = () => {
+  const dispatch = useDispatch()
+  const { hotelsList, loading } = useSelector(state => state.hotels)
+
   const location = useLocation()
+
   const [destination, setDestination] = useState(location.state.destination)
   const [date, setDate] = useState(location.state.date)
-  const [openDate, setOpenDate] = useState(false)
   const [options, setOptions] = useState(location.state.options)
+
+  const [openDate, setOpenDate] = useState(false)
   const [min, setMin] = useState(undefined)
   const [max, setMax] = useState(undefined)
 
-  const { data, error, loading, refetch } = useFetch(
-    `/hotels/?city=${destination.charAt(0).toUpperCase() + destination.slice(1)
-    }&min=${min || 0}&max=${max || 999}`,
-  )
-
 
   function handleSearch() {
-    // inputda her deyisklik eden kimi avtomatik axtaris etmesini istemirsense usefetchede useeffectden url dependencini sil
-    refetch()
+    dispatch(getHotelsList({ city: destination.charAt(0).toUpperCase() + destination.slice(1), min: 1, max: 5000, limit: 50 }))
+    dispatch(setOrderInfo({ destination, date, options }))
   }
 
   return (
@@ -112,7 +112,7 @@ const List = () => {
           <div className="listResult">
             {loading
               ? 'loading please wait'
-              : data?.map((item) => <SearchItem item={item} key={item._id} />)}
+              : hotelsList?.map((item) => <SearchItem item={item} key={item._id} />)}
           </div>
         </div>
       </div>

@@ -68,11 +68,13 @@
 
 .siRating {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .siRating>span {
     font-weight: 500;
+    margin-right: 5px;
 }
 
 .siRating>button {

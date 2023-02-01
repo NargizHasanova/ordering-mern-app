@@ -1,18 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Axios } from "../api";
 
 
-export const getRoomBySearch = createAsyncThunk("hotel/fetchHotelBySearch",
-    async (searchQuery) => {
-        
+export const getRoom = createAsyncThunk("room/fetchRoom",
+    async (hotelId) => {
+        const { data } = await Axios.get(`/hotels/room/${hotelId}`)
+        return data
     }
 )
 
 const initialState = {
-    
+    roomLoading: true,
+    roomsData: []
 }
 
 export const roomsSlice = createSlice({
-    name: 'posts',
+    name: 'rooms',
     initialState,
     reducers: {
         nese: (state) => {
@@ -20,18 +23,16 @@ export const roomsSlice = createSlice({
         },
     },
     extraReducers: {
-        [getRoomBySearch.pending]: (state) => {
-            state.isLoading = true
+        [getRoom.pending]: (state) => {
+            state.roomLoading = true
         },
-        [getRoomBySearch.fulfilled]: (state, { payload }) => {
-            state.posts = payload.posts
-            state.currentPage = payload.currentPage
-            state.numberOfPages = payload.numberOfPages
-            state.isLoading = false
+        [getRoom.fulfilled]: (state, { payload }) => {
+            state.roomsData = payload
+            state.roomLoading = false
         },
-        [getRoomBySearch.rejected]: (state, action) => {
+        [getRoom.rejected]: (state, action) => {
             state.error = action.error.message
-            state.isLoading = false
+            state.roomLoading = false
         }
     }
 })

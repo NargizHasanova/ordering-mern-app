@@ -7,7 +7,6 @@ const Featured = () => {
   //   '/hotels/countByCity?cities=Berlin,London,Madrid'
   // )
   const { hotelsCountByCity, error, loading } = useSelector(state => state.hotels)
-
   return (
     <div className="featured">
       {loading ? (

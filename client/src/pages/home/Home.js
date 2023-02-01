@@ -7,15 +7,17 @@ import MailList from '../../components/mailList/MailList'
 import PropertyList from '../../components/propertyList/PropertyList'
 import './home.scss'
 import { useDispatch } from 'react-redux'
-import { getHotels, getHotelsByPropertyType, getHotelsCountByCity } from '../../redux/hotelsSlice'
+import { getTopHotels, getPropertyCountByType, getPropertyCountByCity } from '../../redux/hotelsSlice'
 
 const Home = () => {
   const dispatch = useDispatch()
-
+//getHotelsCountByCity
+//getHotelsByPropertyType
+//getHotels
   useEffect(() => {
-    dispatch(getHotelsCountByCity())
-    dispatch(getHotelsByPropertyType())
-    dispatch(getHotels({ minPrice: 10, maxPrice: 1000 })) // limiti qeyd elemedim,ts olsa error vererdi
+    dispatch(getPropertyCountByCity())//[5, 0, 0]
+    dispatch(getPropertyCountByType()) // getPropertyCountByType (hotel,villa,cabin)
+    dispatch(getTopHotels({ minPrice: 10, maxPrice: 1000 })) 
   }, [])
 
 

@@ -1,17 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import './reserve.scss'
-import useFetch from '../../hooks/useFetch'
-import { useContext, useState } from 'react'
-import { SearchContext } from '../../context/SearchContext'
 import { useNavigate } from 'react-router-dom'
 import { Axios } from '../../api'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { getRoom } from '../../redux/roomsSlice'
 
 
 const Reserve = ({ setOpenModal, hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([])
-  const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`)
-  const { date } = useContext(SearchContext)
+  // const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`)
+  // const { date } = useContext(SearchContext)
+
+  const dispatch = useDispatch()
+  const { roomsData } = useSelector(state => state.rooms)
+  const { date } = useSelector(state => state.hotels)
+
+
+  useEffect(() => {
+    dispatch(getRoom(hotelId))
+  }, [])
 
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate)
@@ -77,7 +86,7 @@ const Reserve = ({ setOpenModal, hotelId }) => {
           onClick={() => setOpenModal(false)}
         />
         <span>Select your rooms:</span>
-        {data.map((item) => (
+        {roomsData.map((item) => (
           <div className="rItem" key={item._id}>
             <div className="rItemInfo">
               <div className="rTitle">{item.title}</div>

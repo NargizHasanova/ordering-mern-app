@@ -1,5 +1,5 @@
 import Room from "../models/Room.js";
-import Hotel from "../models/Hotel.js";
+import Property from "../models/Property.js";
 import { createError } from "../utils/error.js";
 
 // CREATE ROOM
@@ -7,7 +7,7 @@ export const createRoom = async (req, res, next) => {
     try {
         const newRoom = new Room(req.body)
         const savedNewRoom = await newRoom.save()
-        await Hotel.findByIdAndUpdate(req.params.hotelid, { $push: { rooms: savedNewRoom._id } })
+        await Property.findByIdAndUpdate(req.params.hotelid, { $push: { rooms: savedNewRoom._id } })
         res.status(201).json(savedNewRoom)
     } catch (err) {
         next(err)
@@ -45,7 +45,7 @@ export const updateRoomAvailability = async (req, res, next) => {
 export const deleteRoom = async (req, res, next) => {
     try {
         await Room.findByIdAndDelete(req.params.id)
-        await Hotel.findByIdAndUpdate(req.params.hotelid, { $pull: { rooms: req.params.id } })
+        await Property.findByIdAndUpdate(req.params.hotelid, { $pull: { rooms: req.params.id } })
         res.status(200).json("Room has been deleted.")
     } catch (err) {
         next(err)

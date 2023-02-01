@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose
 
-const HotelSchema = new Schema(
+const PropertySchema = new Schema(
     {
         name: {
             type: String,
@@ -49,4 +49,4 @@ const HotelSchema = new Schema(
     }
 );
 
-export default mongoose.model("Hotel", HotelSchema)
+export default mongoose.model("Property", PropertySchema)

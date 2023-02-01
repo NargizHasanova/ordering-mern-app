@@ -12,11 +12,12 @@ const SearchItem = ({ item }) => {
       ratingDesc = 'Bad'
     }
   }
+
   return (
     <div className="searchItem">
       <img
         src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
-        alt=""
+        alt="hotel"
         className="siImg"
       />
       <div className="siDesc">
@@ -43,7 +44,7 @@ const SearchItem = ({ item }) => {
           </div>
         )}
         <div className="siDetailTexts">
-          <span className="siPrice">${item.cheapestPrice}</span>
+          <span className="siPrice">${item.pricePerNight}</span>
           <span className="siTaxOp">Includes taxes and fees</span>
           <Link to={`/hotels/${item._id}`}>
             <button className="siCheckButton">See availability</button>

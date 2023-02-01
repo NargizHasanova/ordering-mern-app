@@ -15,12 +15,13 @@ import 'react-date-range/dist/theme/default.css' // theme css file
 import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { getHotelsList, setOrderInfo } from '../../redux/hotelsSlice'
 
 const Header = ({ type }) => {
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.users)
-  const [destination, setDestination] = useState('')
 
+  const [destination, setDestination] = useState('')
   const [date, setDate] = useState(
     [
       {
@@ -30,7 +31,6 @@ const Header = ({ type }) => {
       }
     ]
   )
-
   const [options, setOptions] = useState(
     {
       adult: 1,
@@ -54,8 +54,10 @@ const Header = ({ type }) => {
   }
 
   const handleSearch = () => {
-    // dispatch({ type: 'NEW_SEARCH', payload: { destination, date, options } })
-    // navigate('/hotels', { state: { destination, date, options } })
+    dispatch(getHotelsList({ city: destination.charAt(0).toUpperCase() + destination.slice(1), min: 1, max: 5000, limit: 50 }))
+    //charat ona gore bas herifi boyuye cevirirkki api-de modelde city adlari boyuk herfle baslayir
+    dispatch(setOrderInfo({ destination, date, options }))
+    navigate('/hotels', { state: { destination, date, options } })
   }
 
   return (
