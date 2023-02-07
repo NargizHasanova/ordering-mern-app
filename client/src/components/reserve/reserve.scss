@@ -21,13 +21,16 @@
     top: 0;
     right: 0;
     cursor: pointer;
+    padding: 3px;
 }
 
 .rItem {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 50px;
     padding: 20px;
+    width: 250px;
 }
 
 .rInfo {
@@ -35,9 +38,25 @@
     flex-direction: column;
     gap: 5px;
 }
+.selectedRoom {
+    background-color: lightblue;
+    border: 1px solid rgb(68, 68, 240);
+}
 
 .rTitle {
     font-weight: 500;
+    border: 1px solid lightgray;
+    padding: 5px;
+    cursor: pointer;
+    width: 35%;
+    &:hover{
+        background-color: lightblue;
+    }
+    &:disabled{
+        background-color: rgb(255, 79, 79);
+        opacity: 0.8;
+        cursor: not-allowed;
+    }
 }
 
 .rDesc {

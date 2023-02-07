@@ -20,16 +20,16 @@ const PropertyList = () => {
       {loading
         ? 'loading please wait'
         : hotelsPropTypes?.map((item, i) => (
-            <div key={i} className="pListItem">
-              <img src={images[i]} alt="hotel" className="pListImg" />
-              <div className="pListTitles">
-                <h1>{item.type}</h1>
-                <h2>
-                  {item.count} {item.type}
-                </h2>
-              </div>
+          <div key={i} className="pListItem">
+            <img src={images[i]} alt="hotel" className="pListImg" />
+            <div className="pListTitles">
+              <h1>{item.type}</h1>
+              <h2>
+                {item.count} {item.type}
+              </h2>
             </div>
-          ))}
+          </div>
+        ))}
     </div>
   )
 }

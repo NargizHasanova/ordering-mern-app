@@ -19,8 +19,17 @@ const RoomSchema = new Schema(
             type: Number,
             required: true,
         },
+        property: { // room modeli hansi hotele(propertiye) aiddir
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Property',
+            required: true,
+        },
         otaqSayi: Number, // her otel nomrenin otaq sayi
-        unavailableDate: { // otaq hansi tarixe bron edilib
+        availability: {
+            type: Boolean,
+            default: true
+        },
+        bookedDate: { // otaq hansi tarixe bron edilib
             type: [Date]
         }
         // roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }]

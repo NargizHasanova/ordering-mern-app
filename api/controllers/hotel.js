@@ -43,7 +43,6 @@ export const getTopHotels = async (req, res, next) => { //+
 export const getSingleHotel = async (req, res, next) => {
     try {
         const singleHotel = await Property.findById(req.params.id)
-        console.log(singleHotel);
         res.status(200).json(singleHotel)
     } catch (err) {
         next(err)

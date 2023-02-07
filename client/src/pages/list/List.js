@@ -24,7 +24,14 @@ const List = () => {
 
 
   function handleSearch() {
-    dispatch(getHotelsList({ city: destination.charAt(0).toUpperCase() + destination.slice(1), min: 1, max: 5000, limit: 50 }))
+    dispatch(getHotelsList(
+      {
+        city: destination.charAt(0).toUpperCase() + destination.slice(1),
+        min: 1,
+        max: 5000,
+        limit: 50
+      }
+    ))
     dispatch(setOrderInfo({ destination, date, options }))
   }
 

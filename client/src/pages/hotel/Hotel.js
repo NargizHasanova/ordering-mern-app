@@ -14,10 +14,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Reserve from '../../components/reserve/Reserve'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleHotel } from '../../redux/hotelsSlice'
+import { getHotelRooms } from '../../redux/roomsSlice'
 
 const Hotel = () => {
   const dispatch = useDispatch()
   const { date, options, hotel } = useSelector(state => state.hotels)
+  const { user } = useSelector(state => state.users)
   const { id: hotelId } = useParams()
   const [slideNumber, setSlideNumber] = useState(0)
   const [open, setOpen] = useState(false)
@@ -53,11 +55,12 @@ const Hotel = () => {
   }
 
   function reserveTrip() {
-    // if (user) {
-    setOpenModal(true)
-    // } else {
-    //   navigate('/login')
-    // }
+    if (user) {
+      setOpenModal(true)
+      dispatch(getHotelRooms(hotelId))
+    } else {
+      navigate('/login')
+    }
   }
 
   return (

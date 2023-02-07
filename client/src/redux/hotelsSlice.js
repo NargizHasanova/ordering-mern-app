@@ -56,7 +56,6 @@ export const hotelsSlice = createSlice({
     initialState,
     reducers: {
         setOrderInfo: (state, { payload }) => {
-            console.log(payload);
             state.destination = payload.destination
             state.date = payload.date
             state.options = payload.options

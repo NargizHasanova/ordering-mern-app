@@ -16,7 +16,8 @@ const router = express.Router();
 router.post("/:hotelid", createRoom);
 
 // UPDATE
-router.put("/availability/:rumNumId", updateRoomAvailability);
+// router.put("/availability/:rumNumId", updateRoomAvailability);
+router.put("/availability/:roomId", updateRoomAvailability);
 router.put("/:id", updateRoom);
 
 // DELETE
@@ -26,6 +27,6 @@ router.delete("/:id/:hotelid", deleteRoom);
 router.get("/:id", getSingleRoom);
 
 // GET ALL
-router.get("/", getAllRooms);
+router.get("/getHotelRooms/:hotelId", getAllRooms);
 
 export default router;

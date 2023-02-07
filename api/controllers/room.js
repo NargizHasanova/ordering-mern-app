@@ -25,17 +25,28 @@ export const updateRoom = async (req, res, next) => {
 }
 
 // UPDATE ROOM AVAILABILITY
+// export const updateRoomAvailability = async (req, res, next) => {
+//     try {
+//         await Room.updateOne(
+//             { "roomNumbers._id": req.params.rumNumId },
+//             {
+//                 $push: {
+//                     "roomNumbers.$.unavailableDates": req.body.unavailableDates
+//                 },
+//             }
+//         );
+//         res.status(200).json("Room status has been updated.");
+//     } catch (err) {
+//         next(err);
+//     }
+// };
+
 export const updateRoomAvailability = async (req, res, next) => {
+    const roomId = req.params.roomId;
     try {
-        await Room.updateOne(
-            { "roomNumbers._id": req.params.rumNumId },
-            {
-                $push: {
-                    "roomNumbers.$.unavailableDates": req.body.unavailableDates
-                },
-            }
-        );
-        res.status(200).json("Room status has been updated.");
+        const updatedRoom = await Room.findByIdAndUpdate(roomId, { $push: { bookedDate: req.body.unavailableDates } })
+
+        res.status(200).json(updatedRoom);
     } catch (err) {
         next(err);
     }
@@ -66,7 +77,9 @@ export const getSingleRoom = async (req, res, next) => {
 export const getAllRooms = async (req, res, next) => {
     try {
         const allRooms = await Room.find()
-        res.status(200).json(allRooms)
+        // room.property = hotelin id-si
+        const singleHotelRooms = allRooms.filter(room => String(room.property) === req.params.hotelId)
+        res.status(200).json(singleHotelRooms)
     } catch (err) {
         next(err)
     }
